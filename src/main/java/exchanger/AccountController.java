@@ -30,8 +30,17 @@ public class AccountController {
         return repository.save(newAccount);
     }
 
-    @PutMapping("/accounts/{id}")
-    Account exchangeMoney(@RequestBody Currency newCurrency, @PathVariable Long id) {
+    @PutMapping("/accounts/{id}/buy")
+    Account buyUsd(@RequestBody Double addedUsd, @PathVariable Long id) {
+
+        return repository.findById(id)
+                .map(account -> {
+                    return repository.save(account);
+                })
+                .orElseThrow(() -> new AccountNotFoundException(id));
+    }
+    @PutMapping("/accounts/{id}/sell")
+    Account sellUsd(@RequestBody Double addedUsd, @PathVariable Long id) {
 
         return repository.findById(id)
                 .map(account -> {

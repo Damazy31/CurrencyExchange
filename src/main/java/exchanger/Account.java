@@ -13,13 +13,15 @@ public class Account {
     private Double pln;
     private Double usd;
 
-    public Account() {}
+    public Account() {
+        this.usd = (double)0;
+    }
 
     public Account(String name, String surname, Double pln){
         this.name = name;
         this.surname = surname;
         this.pln = pln;
-        this.usd = new Double(0);
+        this.usd = (double) 0;
     }
 
     public Long getId() {
@@ -28,6 +30,37 @@ public class Account {
 
     public String getName() {
         return name;
+    }
+
+    public String getSurname() { return surname;}
+
+    public Double getPln() {return pln;}
+
+    public Double getUsd() {return usd;}
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setPln(Double pln) {
+        this.pln = pln;
+    }
+
+    public void setUsd(Double usd) {
+        this.usd = usd;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, surname, pln, usd);
     }
 
     @Override
