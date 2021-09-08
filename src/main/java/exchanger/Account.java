@@ -58,6 +58,24 @@ public class Account {
         this.usd = usd;
     }
 
+    public void sell(double soldUsd, double buyRate){
+        if(soldUsd >  usd){
+            throw new LackOfFundsException();
+        }else {
+            pln = pln + soldUsd*buyRate;
+            usd = usd - soldUsd;
+        }
+    }
+
+    public void buy(double addedUsd, double sellRate){
+        if(addedUsd*sellRate> pln){
+            throw new LackOfFundsException();
+        }else {
+            pln = pln - addedUsd*sellRate;
+            usd = usd + addedUsd;
+        }
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, name, surname, pln, usd);

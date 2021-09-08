@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountController {
 
     private final AccountRepository repository;
+    private final ExchangeRate exchangeRate;
 
     AccountController(AccountRepository repository){
         this.repository = repository;
+        exchangeRate = new ExchangeRate();
     }
 
     @GetMapping("/accounts/{id}")
@@ -35,7 +37,13 @@ public class AccountController {
 
         return repository.findById(id)
                 .map(account -> {
-                    return repository.save(account);
+                    try{
+                        account.buy(addedUsd, exchangeRate.getBuy());
+                        return repository.save(account);
+                    }
+                    catch (LackOfFundsException e){
+                        throw e;
+                    }
                 })
                 .orElseThrow(() -> new AccountNotFoundException(id));
     }
@@ -44,7 +52,14 @@ public class AccountController {
 
         return repository.findById(id)
                 .map(account -> {
-                    return repository.save(account);
+                    try{
+                        account.sell(addedUsd, exchangeRate.getSell());
+                        return repository.save(account);
+                    }
+                    catch (LackOfFundsException e){
+                        throw e;
+                    }
+
                 })
                 .orElseThrow(() -> new AccountNotFoundException(id));
     }
