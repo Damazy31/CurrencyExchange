@@ -1,7 +1,5 @@
 package exchanger;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountController {
 
     private final AccountRepository repository;
-    private final ExchangeRate exchangeRate;
+    private ExchangeRate exchangeRate;
+    private final HTTPHandler httpHandler;
 
     AccountController(AccountRepository repository){
         this.repository = repository;
-        exchangeRate = new ExchangeRate();
+        httpHandler = new HTTPHandler();
+        exchangeRate =new ExchangeRate();
     }
 
     @GetMapping("/accounts/{id}")
@@ -34,7 +34,9 @@ public class AccountController {
 
     @PutMapping("/accounts/{id}/buy")
     Account buyUsd(@RequestBody Double addedUsd, @PathVariable Long id) {
-
+        if(exchangeRate.getRates() == null || exchangeRate.checkDate()) {
+            getNewExchangeRate();
+        }
         return repository.findById(id)
                 .map(account -> {
                     try{
@@ -49,7 +51,9 @@ public class AccountController {
     }
     @PutMapping("/accounts/{id}/sell")
     Account sellUsd(@RequestBody Double addedUsd, @PathVariable Long id) {
-
+        if(exchangeRate.getRates() == null || exchangeRate.checkDate()) {
+            getNewExchangeRate();
+        }
         return repository.findById(id)
                 .map(account -> {
                     try{
@@ -67,5 +71,13 @@ public class AccountController {
     @DeleteMapping("/accounts/{id}")
     void deleteAccount(@PathVariable Long id) {
         repository.deleteById(id);
+    }
+
+    private void getNewExchangeRate(){
+        try {
+            exchangeRate = httpHandler.synchronousRequest();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }

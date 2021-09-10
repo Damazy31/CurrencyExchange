@@ -1,19 +1,45 @@
 package exchanger;
 
-public class ExchangeRate {
-    private Double buy;
-    private Double sell;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.LocalDate;
 
-    public ExchangeRate(){
-        buy = 3.82;
-        sell = 3.82;
+
+public class ExchangeRate {
+    private String table;
+    private String currency;
+    private String code;
+    private Rates[] rates;
+
+    public ExchangeRate(){}
+
+    public ExchangeRate(@JsonProperty("table") String table,
+                        @JsonProperty("currency") String currency,
+                        @JsonProperty("code") String code,
+                        @JsonProperty("rates") Rates[] rates){
+        this.table = table;
+        this.currency = currency;
+        this.code = code;
+        this.rates = rates;
+    }
+
+    public Rates[] getRates() {
+        return rates;
     }
 
     public Double getBuy() {
-        return buy;
+        return rates[0].getAsk();
     }
 
     public Double getSell() {
-        return sell;
+        return rates[0].getBid();
+    }
+
+    public boolean checkDate(){
+        LocalDate currentDate = LocalDate.now();
+        LocalDate ratesDate = LocalDate.parse(rates[0].getEffectiveDate());
+        if(ratesDate.isBefore(currentDate)){
+            return true;
+        }
+        return false;
     }
 }
