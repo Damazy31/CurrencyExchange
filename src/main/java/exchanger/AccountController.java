@@ -39,13 +39,8 @@ public class AccountController {
         }
         return repository.findById(id)
                 .map(account -> {
-                    try{
-                        account.buy(addedUsd, exchangeRate.getBuy());
-                        return repository.save(account);
-                    }
-                    catch (LackOfFundsException e){
-                        throw e;
-                    }
+                    account.buy(addedUsd, exchangeRate.getAsk());
+                    return repository.save(account);
                 })
                 .orElseThrow(() -> new AccountNotFoundException(id));
     }
@@ -56,13 +51,8 @@ public class AccountController {
         }
         return repository.findById(id)
                 .map(account -> {
-                    try{
-                        account.sell(addedUsd, exchangeRate.getSell());
-                        return repository.save(account);
-                    }
-                    catch (LackOfFundsException e){
-                        throw e;
-                    }
+                    account.sell(addedUsd, exchangeRate.getBid());
+                    return repository.save(account);
 
                 })
                 .orElseThrow(() -> new AccountNotFoundException(id));

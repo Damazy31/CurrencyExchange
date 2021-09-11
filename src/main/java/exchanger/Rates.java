@@ -8,10 +8,6 @@ public class Rates {
     private Double bid;
     private Double ask;
 
-    public Rates(){
-        bid = 3.82;
-        ask = 3.82;
-    }
     public Rates(@JsonProperty("no") String no,
                  @JsonProperty("effectiveDate") String effectiveDate,
                  @JsonProperty("bid") Double bid,

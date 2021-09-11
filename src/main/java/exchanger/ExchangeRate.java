@@ -26,20 +26,17 @@ public class ExchangeRate {
         return rates;
     }
 
-    public Double getBuy() {
+    public Double getAsk() {
         return rates[0].getAsk();
     }
 
-    public Double getSell() {
+    public Double getBid() {
         return rates[0].getBid();
     }
 
     public boolean checkDate(){
         LocalDate currentDate = LocalDate.now();
         LocalDate ratesDate = LocalDate.parse(rates[0].getEffectiveDate());
-        if(ratesDate.isBefore(currentDate)){
-            return true;
-        }
-        return false;
+        return ratesDate.isBefore(currentDate);
     }
 }
