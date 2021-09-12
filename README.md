@@ -7,7 +7,7 @@ kursów z API NBP.
 
 mvnw clean spring-boot:run
 
-##Aplikacja wystawia API, które ma następujące funkcję:
+##Aplikacja wystawia API, które ma następujące funkcje:
 
 ###-Utworzenie nowego konta:
 
