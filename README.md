@@ -3,6 +3,10 @@
 Aplikacja pozwalająca na założenie konta i wymianę walut PLN<->USD według 
 kursów z API NBP.
 
+##Uruchomienie aplikacji
+
+mvnw clean spring-boot:run
+
 ##Aplikacja wystawia API, które ma następujące funkcję:
 
 ###-Utworzenie nowego konta:
